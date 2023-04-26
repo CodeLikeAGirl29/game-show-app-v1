@@ -1,160 +1,138 @@
-const qwerty = document.getElementById("qwerty");
-const btn = document.querySelector(".btn__reset");
-const phrase = document.querySelector("#phrase");
+// Global Variables
 
-let missed = 0;
-let answer = '';
+const qwerty = document.getElementById('qwerty');
+const phrase = document.getElementById('phrase');
+const startButton = document.querySelector('.btn__reset');
+const ul = phrase.querySelector('ul');
+const keyrow = qwerty.querySelectorAll('.keyrow');
+const keyboard = qwerty.getElementsByTagName('button');
+const live = document.querySelectorAll('img');
+const headline = document.querySelector('#overlay h2');
 
-const phrases = [
-  "Pocahontas",
-  "Lilo and Stitch",
-  "Cinderella",
-  "Dumbo",
-  "Buzz Lightyear",
-  "Aladdin",
-  "Anastasia",
-  "Flounder",
-  "Snow White",
-  "Simba",
-  "Mulan",
-  "Pinocchio"
-];
+//Event Trackers
 
-// return a random phrase from an array
-function getRandomPhraseAsArray(answer) {
-  answer = phrases[Math.floor(Math.random() * phrases.length)];
-  const newPhrase = answer.split('');
-  return newPhrase;
+let incorrect = 0; //Missed
+
+//Start Game listener and Overlay toggle
+
+startButton.addEventListener('click', () => {
+  const overlay = document.getElementById('overlay');
+  overlay.style.display = 'none';
+});
+
+//Phrases Array
+const phrases = ["Pocahontas", "Lilo and Stitch", "Cinderella", "Dumbo", "Buzz Lightyear", "Aladdin", "Anastasia", "Flounder", "Snow White", "Simba", "Mulan", "Pinocchio"];
+
+//getRandomPhraseArray function
+
+function getRandomPhraseArray(arr){
+  const randomItem =
+    arr[Math.floor(Math.random()*arr.length)];
+    const newArr = [];
+//Split and Return new character array
+    for (let i = 0; i < randomItem.length; i += 1) {
+      newArr.push(randomItem[i]);
+ }
+ return newArr;
 }
 
-getRandomPhraseAsArray();
-console.log(getRandomPhraseAsArray())
+//addPhraseToDisplay function
 
-// adds the letters of a string to the display
 function addPhraseToDisplay(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    const li = document.createElement('li');
-    li.textContent = arr[i];
-    if (arr[i] === ' ') {
-      li.className = 'space';
-    } else {
-      li.className = 'letter';
+//For each character create a list item
+  for ( let i = 0; i < arr.length; i += 1) {
+    let li = document.createElement('li');
+    li.innerHTML = arr[i];
+    if (li.textContent != ' ') {
+      li.setAttribute('class', 'letter');
+    } else if (li.textContent == ' ' ){
+      li.setAttribute('class', 'space');
     }
-    phrase.append(li);
+//Add li element to parentNode
+ul.appendChild(li);
   }
 }
 
-// checks if a letter is in the phrase
-function checkLetter(button) {
-  let letter = '';
-  const letters = document.querySelectorAll('.letter');
-  for (let i = 0; i < letters.length; i++) {
-    if (letters[i].textContent === button.textContent) {
-      letters[i].className += ' show';
-      letter = letters[i].textContent;
-    }
-  }
-  if (letter === '') {
-    return null;
+//Call, Store, and Create the (arr)gument
 
-  } else {
-    return letter;
-  }
-}
+const phraseArray = getRandomPhraseArray(phrases);
+addPhraseToDisplay(phraseArray);
 
+//Keyboard addEventListener
+for (let i = 0; i < keyboard.length; i += 1) {
+  keyboard[i].addEventListener('click', (e) => {
 
-function createResetBtn() {
-  const resetBtn = document.createElement("button");
-  resetBtn.className = "btn__reset";
-  resetBtn.textContent = "Reset";
-  document.querySelector("body").appendChild(resetBtn);
-  resetBtn.addEventListener("click", (e) => {
-    resetHearts();
-    resetPhrase();
-    resetKeyboard();
-    missed = 0;
-    e.target.remove();
-  });
+//If Keyboard is clicked ID the key's letter
+    let keyLetter = keyboard[i].textContent;
 
-}
-
-// check if the game has been won or lost
-function checkWin() {
-  const letters = document.querySelectorAll(".letter");
-  const show = document.querySelectorAll(".show");
-  const title = document.querySelector(".title");
-  const overlay = document.querySelector("#overlay");
-  if (letters.length === show.length) {
-    overlay.style.display = "flex";
-    overlay.className = "win";
-    title.textContent = "You Won!";
-    createResetBtn();
-  } else if (missed >= 5) {
-    overlay.style.display = "flex";
-    overlay.className = "lose";
-    title.textContent = "You Lost!";
-    createResetBtn();
-  }
-}
-
-function resetHearts() {
-  const tries = document.querySelectorAll(".tries");
-  for (let i = 0; i < tries.length; i++) {
-    tries[i].firstElementChild.src = "images/liveHeart.png";
-  }
-
-}
-
-function resetPhrase() {
-  const phrase = document.querySelector("#phrase");
-  phrase.firstElementChild.innerHTML = "";
-}
-
-function resetKeyboard() {
-  const keyboard = document.querySelectorAll(".chosen");
-  for (let i = 0; i < keyboard.length; i++) {
-    keyboard[i].className = "";
-    keyboard[i].disabled = false;
-  }
-
-}
-
-addPhraseToDisplay(getRandomPhraseAsArray(phrases));
-const letters = document.querySelectorAll(".letter");
-
-// listen for the start game button to be pressed
-btn.addEventListener("click", (e) => {
-  const overlay = document.querySelector("#overlay");
-  overlay.style.display = "none";
-  createResetBtn();
-});
-
-function createResetBtn() {
-  const resetBtn = document.createElement("button");
-  resetBtn.className = "btn__reset";
-  resetBtn.textContent = "Reset";
-  document.querySelector("body").appendChild(resetBtn);
-  resetBtn.addEventListener("click", (e) => {
-    resetHearts();
-    resetPhrase();
-    resetKeyboard();
-    missed = 0;
-    e.target.remove();
-  });
-}
-
-//listen for the onscreen keyboard to be clicked
-qwerty.addEventListener("click", (e) => {
-  const button = e.target;
-  if (button.tagName === "BUTTON") {
-    button.className = "chosen";
-    button.disabled = true;
-    const letterFound = checkLetter(button);
-    if (letterFound === null) {
-      const tries = document.querySelectorAll(".tries");
-      tries[missed].firstElementChild.src = "images/lostHeart.png";
-      missed++;
-    }
+//Compare keyLetter to lisLetter with function
+    checkLetter(keyLetter);
+    keyboard[i].disabled = true;
     checkWin();
+  });
+}
+
+//checkLetter function
+
+function checkLetter(keyLetter) {
+  let lis = document.querySelectorAll('.letter');
+   let letterFound = false;
+  for (let i = 0; i < lis.length; i ++) {
+
+    let lisLetter = lis[i].textContent;
+
+    if ( lisLetter === keyLetter ) {
+      letterFound = true;
+      lis[i].classList.add('show');
+      lis[i].style.transition = 'background 1.0s ease-in-out 0s';
+
+
+
+    }
   }
-});
+  if (letterFound === false) {
+    incorrect += 1;
+  }
+  if (incorrect == 1) {
+    live[0].style.display = 'none';
+  } else if (incorrect == 2) {
+    live[1].style.display = 'none';
+  }else if (incorrect == 3) {
+    live[2].style.display = 'none';
+  } else if (incorrect == 4) {
+    live[3].style.display = 'none';
+  } else if (incorrect == 5) {
+    live[4].style.display = 'none';
+  }
+  return letterFound;
+}
+
+// checkWin function
+
+function checkWin() {
+    let li = document.querySelectorAll('.letter');
+    let show = document.querySelectorAll('.show');
+   if (li.length === show.length){
+   headline.textContent = 'Congrats...You Win!'
+   overlay.style.display = 'flex';
+   startButton.textContent = 'Play Again?';
+   headline.classList.add('win');
+   reset();
+
+ } else if (incorrect === 5) {
+      headline.textContent = 'You Lose!'
+      overlay.style.display = 'flex';
+      startButton.textContent = 'Try Again?';
+      headline.classList.add('lose');
+      reset();
+  }
+}
+
+//Reset Game
+
+function reset(start) {
+
+   startButton.addEventListener('click', () =>{
+     window.location = window.location
+  });
+}
