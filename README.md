@@ -3,6 +3,8 @@ Sixth project of the [Team Treehouse](http://referrals.trhou.se/lindseykdevelope
 
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
+> Live link of this project can be found [here](https://codelikeagirl29.github.io/game-show-app-v1/)
+
 ## Phrase Hunter
 In this project, you'll create a browser version of “Wheel of Success”, a word-guessing game where players will click letters from an onscreen keyboard to try to guess a random phrase.
 
