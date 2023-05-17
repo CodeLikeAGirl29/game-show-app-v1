@@ -3,7 +3,9 @@ Sixth project of the [Team Treehouse](http://referrals.trhou.se/lindseykdevelope
 
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
-> Live link of this project can be found [here](https://codelikeagirl29.github.io/game-show-app-v1/)
+> Live link of this project can be found [here](https://my-game-show-app.netlify.app/)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/aedf8400-e677-4f87-bfe8-47e741c20340/deploy-status)](https://app.netlify.com/sites/my-game-show-app/deploys)
 
 ## Phrase Hunter
 In this project, you'll create a browser version of “Wheel of Success”, a word-guessing game where players will click letters from an onscreen keyboard to try to guess a random phrase.
